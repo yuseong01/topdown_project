@@ -2,34 +2,22 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class PlayerController : BaseController
+public class PlayerController : MonoBehaviour
 {
-    private Camera camera;
+    public float speed = 5f;
+    private Rigidbody2D rb;
 
-    protected override void Start()
+    void Start()
     {
-        base.Start();
-        camera = Camera.main;
+        rb = GetComponent<Rigidbody2D>();
     }
 
-    protected override void HandleAction()
+    void Update()
     {
-        float horizontal = Input.GetAxis("Horizontal");
-        float vertial = Input.GetAxisRaw("Vertical");
-        movementDirection = new Vector2(horizontal, vertial).normalized;
+        float moveX = Input.GetAxisRaw("Horizontal");
+        float moveY = Input.GetAxisRaw("Vertical");
 
-        Vector2 mousePosition = Input.mousePosition;
-        Vector2 worldPos = camera.ScreenToWorldPoint(mousePosition);
-        lookDirection = (worldPos - (Vector2)transform.position);
-
-        if(lookDirection.magnitude < .9f)
-        {
-            lookDirection = Vector2.zero;
-        }
-        else
-        {
-            lookDirection = lookDirection.normalized;
-        }
+        Vector2 move = new Vector2(moveX, moveY).normalized;
+        rb.velocity = move * speed;
     }
-    
 }
