@@ -24,7 +24,6 @@ public class MiniGameController : MonoBehaviour
 
             if(playerPos.x<portalPos.x)
             {
-                Debug.Log("왼쪽에서 닿음!!");
                 spriteRenderer.flipX = true;
                 hasEntered=true;
                 SceneManager.LoadScene("FlappyPlane");

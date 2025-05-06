@@ -11,6 +11,7 @@ public class GameManager : MonoBehaviour
 
     private int currentScore = 0;
     private bool waitingToStart =false;
+    private bool isSuccess = false;
 
     UIManager uiManager;
     Player player;
@@ -36,6 +37,7 @@ public class GameManager : MonoBehaviour
         if(waitingToStart && Input.GetKeyDown(KeyCode.Space))
         {
             waitingToStart =false;
+            isSuccess=false;
             uiManager.restartText.gameObject.SetActive(false);
             player.gameObject.SetActive(true);
         }
@@ -49,6 +51,11 @@ public class GameManager : MonoBehaviour
 
     public void GameOver()
     {
+        ScoreManager.Instance.score = currentScore;
+        UpdateBestScore();
+        ScoreManager.Instance.UpdateSuccessUI(isSuccess);
+        ScoreManager.Instance.UpdateScoreUI();
+        ScoreManager.Instance.scorePanel.SetActive(true);
         uiManager.SetRestart();
     }
 
@@ -57,10 +64,20 @@ public class GameManager : MonoBehaviour
         SceneManager.LoadScene(SceneManager.GetActiveScene().name); //현재켜져 있는 Scene을 가져옴 
     }
 
+    private void UpdateBestScore()
+    {
+        int best = PlayerPrefs.GetInt("BestScore");
+        if(best <currentScore)
+        {
+            PlayerPrefs.SetInt("BestScore", currentScore);
+            isSuccess = true;
+        }
+        
+            
+    }
     public void AddScore(int score)
     {
         currentScore +=score;
-        Debug.Log("Score: "+currentScore);
         uiManager.UpdateScore(currentScore);
     }
 }

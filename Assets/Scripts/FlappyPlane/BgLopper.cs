@@ -26,8 +26,6 @@ public class BgLopper : MonoBehaviour
     //Trigger충돌을 하는 애들한테 랜덤배치를 할 수 있게 해줌
     private void OnTriggerEnter2D(Collider2D collision) //충돌체에 대한 정보만 받을 수 있음(Trigger충돌은 실제 물리 충돌X, 충돌에 대한 통보만 해줌) 그래서 매개변수가 Collider이 아니라 Collider2D임
     {
-        Debug.Log("Triggard: "+collision.name);
-
         if(collision.CompareTag("BackGround"))
         {
             float widthofBgObject = ((BoxCollider2D)collision).size.x;
