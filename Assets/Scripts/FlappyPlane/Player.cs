@@ -81,18 +81,12 @@ public class Player : MonoBehaviour
 
     private void OnCollisionEnter2D(Collision2D collision)
     {
-        if (godMode) return;
-
-        if (isDead) return;
+        if (godMode||isDead) return;
 
         isDead = true;
         deathCooldown = 1f;
 
-        Debug.Log("현재 isDie 값: " + animator.GetInteger("isDie"));
-
-
         animator.SetInteger("isDie", 1);
-
         gameManager.GameOver();
     }
 }

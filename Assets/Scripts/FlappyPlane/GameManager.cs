@@ -10,8 +10,11 @@ public class GameManager : MonoBehaviour
     public static GameManager Instance {get {return gameManager; }} // 그 변수를 외부로 가져갈 수 있는 프로퍼티 하나 
 
     private int currentScore = 0;
+    private bool waitingToStart =false;
 
     UIManager uiManager;
+    Player player;
+
     public UIManager UIManager {get {return uiManager; }}
 
     //가장 최초의 객체를 설정해주는 작업
@@ -19,16 +22,33 @@ public class GameManager : MonoBehaviour
     {
         gameManager = this;
         uiManager = FindObjectOfType<UIManager>();
+        player = FindObjectOfType<Player>();
     }
 
     private void Start()
     {
         uiManager.UpdateScore(0);
+        player.gameObject.SetActive(false);
+    }
+
+    void Update()
+    {
+        if(waitingToStart && Input.GetKeyDown(KeyCode.Space))
+        {
+            waitingToStart =false;
+            uiManager.restartText.gameObject.SetActive(false);
+            player.gameObject.SetActive(true);
+        }
+    }
+
+    public void ReadyToStartGame()
+    {
+        waitingToStart = true;
+        uiManager.SetRestart();
     }
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
         uiManager.SetRestart();
     }
 
